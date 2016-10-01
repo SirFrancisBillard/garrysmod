@@ -3,18 +3,20 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "base_anim" )
 
-ENT.Spawnable = false
-ENT.AdminOnly = false
-ENT.RenderGroup = RENDERGROUP_TRANSLUCENT
-ENT.Widget = true
+ENT.Spawnable			= false
+ENT.AdminOnly			= false
+ENT.RenderGroup 		= RENDERGROUP_TRANSLUCENT
+ENT.Widget				= true
 
--- This appears to be unused in the base game, but leaving it in case someones does
-ENT.Materials = {}
+ENT.Materials			=
+{
+	Button = Material( "widgets/btn.png" )
+}
 
 function ENT:SetupDataTables()
 
-	self:NetworkVar( "Float", 0, "SizeVar" ) -- Size (bounds)
-	self:NetworkVar( "Float", 1, "Priority" ) -- Priority above other widgets (clicks, visually)
+	self:NetworkVar( "Float", 0, "SizeVar" );		-- Size (bounds)
+	self:NetworkVar( "Float", 1, "Priority" );		-- Priority above other widgets (clicks, visually)
 
 end
 
@@ -23,7 +25,7 @@ end
 -- Called on both client and server in multiplayer
 -- Only on the server in singleplayer.
 --
-function ENT:OnClick( ply )end
+function ENT:OnClick( ply ) end
 function ENT:OnRightClick( ply ) end
 function ENT:PressedThink( pl, mv ) end
 function ENT:PressedShouldDraw( widget ) return true end
@@ -107,6 +109,7 @@ function ENT:PressedThinkInternal( ply, mv )
 
 end
 
+
 --
 -- Called by widget's Tick hook when a mouse button was
 -- pressed while hovering over this widget
@@ -137,7 +140,7 @@ function ENT:OnRelease( ply, iButton, mv )
 
 	--
 	-- The player has to click and release on the widget
-	-- or we assume they clicked and changed their mind
+	-- or we assume they clicked and changed their mind 
 	-- so dragged off.. like people do sometimes.
 	--
 	if ( ply:GetHoveredWidget() != self ) then return end
@@ -202,8 +205,8 @@ function ENT:OverlayRender()
 	render.DrawCube( self:GetPos(), vSize, ColorAlpha( col, 0.8 ), false )
 
 	render.SetColorMaterial()
-	render.DrawCube( self:GetPos(), vSize, col, false )
-
+	render.DrawCube( self:GetPos(), vSize, col, false )		
+	
 end
 
 function ENT:TestCollision( startpos, delta, isbox, extents )
@@ -213,9 +216,10 @@ function ENT:TestCollision( startpos, delta, isbox, extents )
 
 	-- TODO. Actually trace against our cube!
 
-	return {
-		HitPos = self:GetPos(),
-		Fraction = 0.5 * self:GetPriority()
+	return
+	{
+		HitPos		= self:GetPos(),
+		Fraction	= 0.5 * self:GetPriority()
 	}
 
 end
